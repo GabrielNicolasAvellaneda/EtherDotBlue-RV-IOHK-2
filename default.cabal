@@ -1,0 +1,49 @@
+cabal-version:      2.4
+name:               defi-stake-pool
+version:            0.1.0.0
+
+-- A short (one-line) description of the package.
+-- synopsis:
+
+-- A longer description of the package.
+-- description:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+
+license: Apache-2.0
+license-files: LICENSE
+author:             Gabriel Nicolas Avellaneda
+maintainer:         avellaneda.gabriel@gmail.com
+
+-- A copyright notice.
+-- copyright:
+-- category:
+-- extra-source-files: CHANGELOG.md
+
+library
+    exposed-modules:
+      Main
+    build-depends:
+      base ^>=4.14.1.0,
+      plutus-contract,
+      plutus-tx-plugin,
+      plutus-tx,
+      plutus-ledger
+    hs-source-dirs: src
+    default-language: Haskell2010
+
+executable mymodule
+    main-is: Main.hs
+    hs-source-dirs: src
+    default-extensions: ExplicitForAll ScopedTypeVariables
+                    DeriveGeneric StandaloneDeriving DeriveLift
+                    GeneralizedNewtypeDeriving DeriveFunctor DeriveFoldable
+                    DeriveTraversable MultiParamTypeClasses
+    build-depends:
+      base ^>=4.14.1.0,
+      plutus-contract,
+      plutus-tx-plugin,
+      plutus-tx,
+      plutus-ledger
+    default-language: Haskell2010
