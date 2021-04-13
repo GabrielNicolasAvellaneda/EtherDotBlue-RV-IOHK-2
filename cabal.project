@@ -14,6 +14,7 @@ source-repository-package
   location: https://github.com/input-output-hk/plutus.git
   subdir: 
     freer-extras
+    playground-common
     plutus-core 
     plutus-contract 
     plutus-ledger 

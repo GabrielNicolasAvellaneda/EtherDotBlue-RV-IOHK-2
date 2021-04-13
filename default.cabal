@@ -29,7 +29,13 @@ library
       plutus-contract,
       plutus-tx-plugin,
       plutus-tx,
-      plutus-ledger
+      plutus-ledger,
+      aeson,
+      containers,
+      playground-common,
+      plutus-contract,
+      text,
+      lens -any,
     hs-source-dirs: src
     default-language: Haskell2010
 
@@ -45,5 +51,11 @@ executable mymodule
       plutus-contract,
       plutus-tx-plugin,
       plutus-tx,
-      plutus-ledger
+      plutus-ledger,
+      aeson,
+      containers,
+      playground-common,
+      plutus-contract,
+      text
+
     default-language: Haskell2010
