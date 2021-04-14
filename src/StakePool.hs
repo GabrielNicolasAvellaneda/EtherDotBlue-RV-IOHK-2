@@ -50,7 +50,7 @@ PlutusTx.unstableMakeIsData ''StakePoolDatum
 PlutusTx.makeLift ''StakePoolDatum
 
 data StakePoolRedeemer = StakePoolRedeemer
-  {
+  { sprAmount :: !Integer
   }
   deriving (Show)
 
@@ -60,6 +60,11 @@ PlutusTx.makeLift ''StakePoolRedeemer
 data StakeParams = StakeParams
   { spPeriod :: !Slot,
     spAmount :: !Integer
+  }
+  deriving (Generic, Show, ToSchema, ToJSON, FromJSON)
+
+data RedeemParams = RedeemParams
+  { rpAmount :: !Integer
   }
   deriving (Generic, Show, ToSchema, ToJSON, FromJSON)
 
@@ -107,14 +112,25 @@ stake StakeParams {..} = do
   void $ awaitTxConfirmed $ txId ledgerTx
   logInfo @String $ "staked " <> show spAmount <> " lovelace"
 
+redeem :: (HasBlockchainActions s) => RedeemParams -> Contract w s Text ()
+redeem RedeemParams {..} = do
+  unspentOutputs <- utxoAt stakePoolAddr
+  let r = StakePoolRedeemer {sprAmount = rpAmount}
+      tx = collectFromScript unspentOutputs r
+  ledgerTx <- submitTxConstraintsSpending inst unspentOutputs tx
+  void $ awaitTxConfirmed $ txId ledgerTx
+  logInfo @String $ printf "redeemed %d lovelances" rpAmount
+
 type StakePoolSchema =
   BlockchainActions
     .\/ Endpoint "stake" StakeParams
+    .\/ Endpoint "redeem" RedeemParams
 
 endpoints :: Contract () StakePoolSchema Text ()
-endpoints = stake' >> endpoints
+endpoints = (stake' `select` redeem') >> endpoints
   where
     stake' = endpoint @"stake" >>= stake
+    redeem' = endpoint @"redeem" >>= redeem
 
 mkSchemaDefinitions ''StakePoolSchema
 mkKnownCurrencies []
