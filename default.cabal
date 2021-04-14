@@ -23,7 +23,7 @@ maintainer:         avellaneda.gabriel@gmail.com
 
 library
     exposed-modules:
-      Main
+      Main, StakePool
     build-depends:
       base ^>=4.14.1.0,
       plutus-contract,
